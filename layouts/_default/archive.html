@@ -1,0 +1,29 @@
+{{ define "main" }}
+{{ $pages := (where (where .Site.Pages "Layout" "post") "IsPage" true) }}
+
+<div class="archive-list">
+    {{ range ($pages.GroupByDate "2006") }}
+    {{ if gt .Key 1 }}
+        {{ $.Scratch.Set "count" 1 }}
+        {{ range .Pages  }}
+            {{ if (eq ($.Scratch.Get "count") 1) }}
+                {{ $.Scratch.Set "count" 0 }}
+                <h1 class="post-meta">{{ .Date.Format "2006" }}</h1>
+            {{ end }}
+        {{ end }}
+
+        <ul>
+        {{ range .Pages }}
+            <li>
+                <span>{{ .Date.Format "2006/01/02" }}</span> — 
+                <a href="{{ .RelPermalink }}">
+                    {{ .Title }}
+                </a>
+            </li>
+        {{ end }}
+        </ul>
+
+    {{ end }}
+    {{ end }}
+</div>
+{{ end }}
