@@ -7,6 +7,18 @@
   <div class="posts">
     {{ $isntDefault := not (or (eq (trim $.Site.Params.contentTypeName " ") "posts") (eq (trim $.Site.Params.contentTypeName " ") "")) }}
     {{ $contentTypeName := cond $isntDefault (string $.Site.Params.contentTypeName) "posts" }}
+    
+    <h5><a href="/tags/">TAGS</a></h5>
+    <div class="tags">
+      {{ $featured_condition_size := 0 }}
+      {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
+          {{ if gt (len $taxonomy.Pages) $featured_condition_size }}
+              <a href="{{ "/tags/" | relLangURL }}{{ $name | urlize }}" title="{{ $name }}">
+                  {{ $name }}
+              </a>
+          {{ end }}
+      {{ end }}
+    </div>
 
     {{ $PageContext := . }}
     {{ if .IsHome }}
